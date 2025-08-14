@@ -9,6 +9,7 @@ form:
   - gpu_type 
   - version
   - modeldir
+  - user_data
   
 attributes:
 <%= File.read("/etc/ood/config/apps/dashboard/batch_connect/partials/all_partition.yml").indent(2) %>
@@ -20,7 +21,7 @@ attributes:
     label: Version
     widget: select
     options:
-          - ["2.6"]
+          - ["3.10"]
 
   modeldir:
     label: Model directory
@@ -33,3 +34,13 @@ attributes:
     help: |
           A selection of commonly used models are available at `/cluster/tufts/hpc/tools/text-generation-webui/models`.  
           You may also provide your own model path if preferred.
+
+  user_data:
+    label: User Data directory
+    widget: path_selector
+    directory: /cluster/tufts
+    favorites:
+      - /cluster/tufts
+      - /cluster/home 
+    help: |
+          Default is **$HOME/text-generation-webui/user_data**.

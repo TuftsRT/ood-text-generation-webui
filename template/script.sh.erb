@@ -5,12 +5,18 @@
 # =========================
 MODELDIR=<%= context.modeldir %>
 VER="<%= context.version %>"
+USER_DATA="<%= context.user_data %>"
+# If USER_DATA is empty or unset, use default path
+if [ -z "$USER_DATA" ]; then
+  USER_DATA="$HOME/text-generation-webui/user_data"
+fi
+mkdir -p /cluster/tufts/yzhang85/user_data
+cp -r /cluster/tufts/apps/container/ngc/ai/text-generation-webui/user_data/* $USER_DATA/
+
 WEBUI_REPO="/cluster/tufts/hpc/tools/text-generation-webui"
-IMAGE="/cluster/tufts/ngc/images/text-generation-webui_${VER}.sif"
+IMAGE="/cluster/tufts/apps/container/ngc/images/text-generation-webui_${VER}.sif"
 CONFIG="$PWD/config.json"
-PROGRAM="start_linux.sh"
-CACHEDIR=$HOME/text_generation/cache
-LOGDIR=$HOME/text_generation/logs
+PROGRAM="/opt/text-generation-webui/start_linux.sh"
 
 
 # =========================
@@ -21,32 +27,18 @@ module load singularity
 module list
 
 # =========================
-# Directory Setup
-# =========================
-mkdir -p "$CACHEDIR"
-mkdir -p "$LOGDIR"
-
-# =========================
 # Logging Info
 # =========================
 echo "🔌 Using port: $port"
 echo "🌐 Running on host: $host"
 echo "📁 Model dir: $MODELDIR"
-echo "📦 Cache dir: $CACHEDIR"
-echo "📦 Logs dir: $LOGDIR"
+echo "📦 User Data dir: $USER_DATA"
 # =========================
 # Run the Container
 # =========================
 singularity run --nv \
-  --bind "$CACHEDIR:/opt/text-generation-webui/cache" \
-  --bind "$LOGDIR:/opt/text-generation-webui/logs" \
-  --bind "$WEBUI_REPO/characters:/opt/text-generation-webui/characters" \
-  --bind "$WEBUI_REPO/instruction-templates:/opt/text-generation-webui/instruction-templates" \
-  --bind "$WEBUI_REPO/loras:/opt/text-generation-webui/loras" \
-  --bind "$MODELDIR:/opt/text-generation-webui/models" \
-  --bind "$WEBUI_REPO/presets:/opt/text-generation-webui/presets" \
-  --bind "$WEBUI_REPO/prompts:/opt/text-generation-webui/prompts" \
-  --bind "$WEBUI_REPO/training:/opt/text-generation-webui/training" \
+  --bind "$USER_DATA:/opt/text-generation-webui/user_data" \
+  --bind "$MODELDIR:/opt/text-generation-webui/user_data/models" \
   "$IMAGE" \
   $PROGRAM \
   --listen \
