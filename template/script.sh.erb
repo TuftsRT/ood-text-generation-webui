@@ -10,7 +10,7 @@ USER_DATA="<%= context.user_data %>"
 if [ -z "$USER_DATA" ]; then
   USER_DATA="$HOME/text-generation-webui/user_data"
 fi
-mkdir -p /cluster/tufts/yzhang85/user_data
+mkdir -p $USER_DATA
 cp -r /cluster/tufts/apps/container/ngc/ai/text-generation-webui/user_data/* $USER_DATA/
 
 WEBUI_REPO="/cluster/tufts/hpc/tools/text-generation-webui"
