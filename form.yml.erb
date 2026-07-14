@@ -10,8 +10,17 @@ form:
   - version
   - modeldir
   - user_data
+  - ta_qos
   
 attributes:
+  ta_qos:
+    widget: check_box
+    label: "Request priority start"
+    cacheable: false
+    help: "Limited to 1 running job at a time. (--qos=interactive)"
+    value: "normal"
+    checked_value: "interactive"
+    unchecked_value: "normal"
 <%= File.read("/etc/ood/config/apps/dashboard/batch_connect/partials/gpu_partition.yml").indent(2) %>
 <%= File.read("/etc/ood/config/apps/dashboard/batch_connect/partials/gpu_type.yml").indent(2) %>
 <%= File.read("/etc/ood/config/apps/dashboard/batch_connect/partials/num_cores_generic.yml").indent(2) %>
