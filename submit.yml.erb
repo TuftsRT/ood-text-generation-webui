@@ -20,7 +20,7 @@ script:
     - "--cpus-per-task=<%= num_cores %>"
     - "--mem=<%= num_memory %>G"
     - "--nodes=1"
-    - "-p <%= partition %>"
+    - "--partition=<%= partition %>"
 <%
   skip_gres = gpu_type == "none" || ["batch", "largemem", "rc2", "pangolinlab", "ruiguolab", "shushkovlab", "vaseylab"].include?(partition)
 %>
